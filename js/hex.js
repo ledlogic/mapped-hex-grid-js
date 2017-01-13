@@ -25,10 +25,8 @@ var hex = {
 	getMousePos: function(evt) {
 		var c = hex.c;
 	    var rect = c.getBoundingClientRect();
-	    return {
-	        x: evt.clientX - rect.left,
-	        y: evt.clientY - rect.top
-	    };
+	    var ret = new Point(evt.clientX - rect.left, evt.clientY - rect.top);
+	    return ret;
 	},
 
 	redraw: function() {
@@ -72,7 +70,7 @@ var hex = {
 	    if (hex.lastPos) {
 			cc.strokeStyle = '#ff0000';
 			cc.fillStyle = '#ff0000';
-			cc.fillText("OVER", hex.lastPos.x, hex.lastPos.y);
+			cc.fillText(hex.lastPos.toString(), hex.lastPos.x, hex.lastPos.y);
 	    }
 	},
 	
