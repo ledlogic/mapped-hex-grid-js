@@ -1,5 +1,6 @@
 var hex = {
 	c: null,
+	lastPos: null,
 	
 	init: function() {
 		hex.c = $("#c")[0];
@@ -7,9 +8,27 @@ var hex = {
 		
 		// update on any window size change.
 		window.addEventListener("resize", function () {hex.redraw();});
+		
+		$(hex.c).on("mousemove", hex.hexHover);	
 
 		// first draw
 		hex.redraw();
+	},
+	
+	hexHover: function(evt) {
+		var pos = hex.getMousePos(evt);
+		hex.lastPos = pos;
+        //hex.hexLog([pos.x, pos.y]);
+		hex.redraw();
+    },
+	
+	getMousePos: function(evt) {
+		var c = hex.c;
+	    var rect = c.getBoundingClientRect();
+	    return {
+	        x: evt.clientX - rect.left,
+	        y: evt.clientY - rect.top
+	    };
 	},
 
 	redraw: function() {
@@ -32,6 +51,15 @@ var hex = {
 			    var poly = hex.hexArray(point, r, 6, 1);
 				cc.strokeStyle = '#cccccc';
 				cc.fillStyle = '#cccccc';
+				
+				if (hex.lastPos) {
+			    	dist = hex.hexDist(hex.lastPos, point);
+			    	if (dist <= r) {
+						cc.strokeStyle = '#ff0000';
+						cc.fillStyle = '#ff0000';
+			    	}
+			    }				
+				
 			    hex.drawPoly(cc, poly);
 
 				cc.fillStyle = '#000066';
@@ -40,6 +68,19 @@ var hex = {
 			    cc.fillText([i,j], point.x-5, point.y-5);
 		    }
 	    }	    
+	    
+	    if (hex.lastPos) {
+			cc.strokeStyle = '#ff0000';
+			cc.fillStyle = '#ff0000';
+			cc.fillText("OVER", hex.lastPos.x, hex.lastPos.y);
+	    }
+	},
+	
+	hexDist: function(point1, point2) {
+		var dx = Math.pow(point2.x - point1.x, 2.0);
+		var dy = Math.pow(point2.y - point1.y, 2.0);
+		var d = Math.sqrt(dx + dy);
+		return d;
 	},
 	
 	drawPoint: function(cc, point) {
