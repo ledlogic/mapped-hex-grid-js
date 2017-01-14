@@ -7,7 +7,7 @@ var hex = {
 		hex.$map = $("#map");
 		
 		hex.c = $("#c")[0];
-		console.log(hex.c);
+        //hex.hexLog(hex.c);
 		
 		// update on any window size change.
 		window.addEventListener("resize", function () {hex.redraw();});
@@ -33,10 +33,7 @@ var hex = {
 	},
 
 	redraw: function() {
-		console.log("redraw");
-		
-		var h = hex.$map.parent().height();
-		hex.hexLog(h);
+		//hex.hexLog("redraw");
 		
 		var $heading = hex.$map.find(".panel-heading");
 		var $body = hex.$map.find(".panel-body");
@@ -44,8 +41,8 @@ var hex = {
 		
 		var hh = $heading.height() + parseInt($heading.css("padding-top"), 10) + parseInt($heading.css("padding-bottom"), 10);
 		var fh = $footer.height() + parseInt($footer.css("padding-top"), 10) + parseInt($footer.css("padding-bottom"), 10);
-		hex.hexLog("hh[" + hh + "]");
-		hex.hexLog("fh[" + fh + "]");
+		//hex.hexLog("hh[" + hh + "]");
+		//hex.hexLog("fh[" + fh + "]");
 		$body.css("top", hh + "px");
 		$body.css("bottom", fh + "px");
 		
