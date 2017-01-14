@@ -13,6 +13,7 @@ var hex = {
 		window.addEventListener("resize", function () {hex.redraw();});
 		
 		$(hex.c).on("mousemove", hex.hexHover);	
+		$(hex.c).on("mouseout", hex.hexOut);	
 
 		// first draw
 		hex.redraw();
@@ -22,6 +23,11 @@ var hex = {
 		var pos = hex.getMousePos(evt);
 		hex.lastPos = pos;
         //hex.hexLog([pos.x, pos.y]);
+		hex.redraw();
+    },
+    
+    hexOut: function(evt) {
+		hex.lastPos = null;
 		hex.redraw();
     },
 	
