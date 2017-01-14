@@ -1,8 +1,11 @@
 var hex = {
+	$map: null,
 	c: null,
 	lastPos: null,
 	
 	init: function() {
+		hex.$map = $("#map");
+		
 		hex.c = $("#c")[0];
 		console.log(hex.c);
 		
@@ -31,6 +34,20 @@ var hex = {
 
 	redraw: function() {
 		console.log("redraw");
+		
+		var h = hex.$map.parent().height();
+		hex.hexLog(h);
+		
+		var $heading = hex.$map.find(".panel-heading");
+		var $body = hex.$map.find(".panel-body");
+		var $footer = hex.$map.find(".panel-footer");
+		
+		var hh = $heading.height() + parseInt($heading.css("padding-top"), 10) + parseInt($heading.css("padding-bottom"), 10);
+		var fh = $footer.height() + parseInt($footer.css("padding-top"), 10) + parseInt($footer.css("padding-bottom"), 10);
+		hex.hexLog("hh[" + hh + "]");
+		hex.hexLog("fh[" + fh + "]");
+		$body.css("top", hh + "px");
+		$body.css("bottom", fh + "px");
 		
 		var c = hex.c;
 	    var cc = c.getContext("2d");
