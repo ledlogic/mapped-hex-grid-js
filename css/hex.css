@@ -32,4 +32,6 @@ body {
 	z-level: 20;
 	width: 100%;
 	margin-bottom: 0;
+	padding: 0 20px 0 20px;
+	font-size: 0.8em;
 }
