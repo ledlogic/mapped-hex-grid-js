@@ -27,7 +27,7 @@ var hex = {
     },
     
     hexOut: function(evt) {
-		hex.lastPos = null;
+		hex.lastPos = null; 
 		hex.redraw();
     },
 	
@@ -56,41 +56,42 @@ var hex = {
 	    var cc = c.getContext("2d");
 	    c.width = c.clientWidth;
 	    c.height = c.clientHeight;
-
-	    var r = 50;
-	    var dw = c.width / (Math.sqrt(3.0) * r);
-	    var dy = c.height / (Math.sqrt(3.0) * r);
 	    
-	    for (var i = 0; i < dw; i++) {
+	    //console.log("c.width[" + c.width + "]");
+
+	    var r = c.width / (50 * Math.sqrt(2) + 2);
+	    var dx = (c.width - 2.0 * r) / (2 * 0.75 * r);
+	    var dy = c.height / (Math.sqrt(3.0) * r) - 1;
+	    
+	    //console.log("dx[" + dx + "]");
+	    //console.log("dy[" + dy + "]");
+	    
+	    for (var i = 0; i < dx; i++) {
 		    for (var j = 0; j < dy; j++) {
-		    	var x = i * Math.sqrt(3.0) * r + (j % 2 * Math.sqrt(3.0) / 2.0) * r + r;
-		    	var y = (j * r * 1.5) + r;
+		    	var x = 1 * r + i * 1.5 * r;
+		    	var y = (j * r * Math.sqrt(3.0) + r * (1 + (i % 2) * Math.sqrt(0.75)));
 			    var point = new Point(x, y);
-			    var poly = hex.hexArray(point, r, 6, 1);
+			    var poly = hex.hexArray(point, r, 6, 0);
 				cc.strokeStyle = '#cccccc';
 				cc.fillStyle = '#cccccc';
-				
+
 				if (hex.lastPos) {
 			    	dist = hex.hexDist(hex.lastPos, point);
 			    	if (dist <= r) {
-						cc.strokeStyle = '#ff0000';
-						cc.fillStyle = '#ff0000';
+				    	cc.fillStyle = '#cccce2';
+						cc.strokeStyle = '#000066';
+				    	hex.drawPoint(cc, point);
+				    	$(".panel-hex").html("hex x:" + i + ",y:"+ j);
+				    	hex.fillPoly(cc, poly);
 			    	}
 			    }				
-				
-			    hex.drawPoly(cc, poly);
 
-				cc.fillStyle = '#000066';
-				cc.strokeStyle = '#000066';
-			    hex.drawPoint(cc, point);
-			    cc.fillText([i,j], point.x-5, point.y-5);
+			    hex.drawPoly(cc, poly);
 		    }
 	    }	    
 	    
 	    if (hex.lastPos) {
-			cc.strokeStyle = '#ff0000';
-			cc.fillStyle = '#ff0000';
-			cc.fillText(hex.lastPos.toString(), hex.lastPos.x, hex.lastPos.y);
+			$(".panel-coord").html("coord x:" + hex.lastPos.x + ",y:"+ hex.lastPos.y);
 	    }
 	},
 	
@@ -115,6 +116,25 @@ var hex = {
 		    //cc.fillText([i], point1.x, point1.y);
 		}
 	},
+	
+	fillPoly: function(cc, poly) {
+		cc.beginPath();
+		for (var i=0; i < poly.length - 1; i++) {
+			point1 = poly[i];
+			point2 = poly[i + 1];
+			
+			var x1 = Math.floor(point1.x);
+			var y1 = Math.floor(point1.y);
+			var x2 = Math.floor(point2.x);
+			var y2 = Math.floor(point2.y);
+			
+			if (i==0) 
+			cc.moveTo(x1, y1);
+			cc.lineTo(x2, y2);
+		}
+		cc.closePath();
+		cc.fill();
+	},	
 
 	drawLine: function(cc, point1, point2) {
 		var x1 = Math.floor(point1.x);
